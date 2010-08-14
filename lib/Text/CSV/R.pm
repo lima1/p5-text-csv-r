@@ -392,7 +392,7 @@ Similar to
 
     write_table($file, sep_char => "\t" );
 
-Headers include a column for the row names.
+The only difference is that headers include a column for the row names.
 
 =item colnames($M, $array_ref)
 

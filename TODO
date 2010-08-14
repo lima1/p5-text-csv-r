@@ -1,2 +1,2 @@
 - there are some options not yet implemented (dec for write, ...)
-- better way of handling encondig? something that supports Perl 5.6?
+- better way of handling encoding? something that supports Perl 5.6?

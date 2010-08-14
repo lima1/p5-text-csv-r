@@ -1,6 +1,11 @@
 Revision history for Perl extension Text::CSV::R.
 
-	- fixed typo in SYNOPSIS.
+0.02  Sat Aug 14 19:00:00 2010
+    - Option append
+    - POD updates (write_table, write_csv, fixed typo in SYNOPSIS, added link
+      to Text::CSV::Slurp)
+    - added git repository to Makefile.PL and Build.PL  
+    - more author tests
 
 0.01  Thu Jul 29 18:11:00 2010
 	- initial CPAN upload.
