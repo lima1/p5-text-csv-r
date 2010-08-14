@@ -23,7 +23,7 @@ our %EXPORT_TAGS = (
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our $DEFAULT_OPTS = {
     header           => undef,
@@ -57,8 +57,8 @@ our $R_OPT_MAP = {
 sub colnames {
     my ( $tied_ref, $values ) = @_;
     my $tied_obj = tied @{$tied_ref};
-    if ( defined $values ) { $tied_obj->{colnames} = $values; }
-    return $tied_obj->{colnames};
+    if ( defined $values ) { $tied_obj->{COLNAMES} = $values; }
+    return $tied_obj->{COLNAMES};
 }
 
 sub rownames {
@@ -68,9 +68,9 @@ sub rownames {
         if ( scalar @{$values} != scalar @{ $tied_obj->{ARRAY} } ) {
             croak 'Invalid rownames length';
         }
-        $tied_obj->{rownames} = $values;
+        $tied_obj->{ROWNAMES} = $values;
     }
-    return $tied_obj->{rownames};
+    return $tied_obj->{ROWNAMES};
 }
 
 # merge the global default options, function defaults and user options
@@ -132,7 +132,10 @@ sub _get_fh {
         if ( defined $opts->{encoding} && length $opts->{encoding} > 0 ) {
             $encoding = ':encoding(' . $opts->{encoding} . ')';
         }
-        my $mode = $read ? '<' : '>';
+        my $mode
+            = $read ? '<'
+            : ( defined $opts->{append} && $opts->{append} ) ? '>>'
+            :                                                  '>';
         open my $IN, $mode . $encoding, $file
             or croak "Cannot open $file for reading: $!";
         return ( $IN, 1 );
@@ -201,7 +204,7 @@ sub _write_to_fh {
     my @data = @{$data_ref};
 
     if ($rownames) {
-        @data = map { [ $tied_obj->{rownames}->[$_], @{ $data[$_] } ] }
+        @data = map { [ $tied_obj->{ROWNAMES}->[$_], @{ $data[$_] } ] }
             0 .. $#data;
     }
 
@@ -501,6 +504,15 @@ implementation. In doubt, consult the L<Text::CSV> documentation.
   R           : eol
   Default     : \n
   Description : the character(s) to print at the end of each line (row).
+
+=item append
+
+  Text::CSV   : 
+  R           : append
+  Default     : 
+  Description : Only relevant if ‘file’ is a character string.  If true,
+                the output is appended to the file.  Otherwise, any
+                existing file of the name is destroyed.
 
 =item col_names, row_names
 
