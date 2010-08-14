@@ -538,7 +538,7 @@ implementation. In doubt, consult the L<Text::CSV> documentation.
 
 =head1 SEE ALSO
 
-L<Text::CSV>, L<Spreadsheet::Read>
+L<Text::CSV>, L<Text::CSV::Slurp>, L<Spreadsheet::Read>
 
 =head1 DIFFERENCES TO R
 
