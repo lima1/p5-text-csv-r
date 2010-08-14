@@ -1,4 +1,4 @@
-use Test::More tests => 19;
+use Test::More tests => 21;
 use Test::NoWarnings;
 
 use Text::CSV::R qw(:all);
@@ -38,7 +38,7 @@ is_deeply( colnames($M_ref), [ qw( V1 V2 V3 V4 V5 ) ],
     'colnames');
 
 # test row.names option
-$M_ref = read_csv('t/testfiles/imdb.dat',  'row_names' =>2 );
+$M_ref = read_csv('t/testfiles/imdb.dat',  'row_names' =>2, dec=> q{,} );
 cmp_ok($M_ref->[0][2], '==', 1994, 'data correct');
 cmp_ok($M_ref->[0][1], '==', 9.1 , 'data correct');
 is_deeply( rownames($M_ref), [ "The Shawshank Redemption", "The Godfather",
@@ -50,7 +50,7 @@ $M_ref = read_csv('t/testfiles/imdb4.dat', verbatim=>1 );
 #
 # test read_csv2
 
-$M_ref = read_csv2('t/testfiles/imdb2.dat', dec => "," );
+$M_ref = read_csv2('t/testfiles/imdbcsv2.dat', dec => "," );
 cmp_ok($M_ref->[0][1], '==', 9.1 , 'data correct');
 
 # test auto header and row_names
@@ -60,3 +60,8 @@ is_deeply( rownames($M_ref), [ '1. ', '2. ',  '3. ' ], 'rownames');
 is_deeply( colnames($M_ref), [ qw( Rating Title Year Votes) ],
     'colnames');
 
+$M_ref = read_delim('t/testfiles/imdbdelim.dat' );
+
+is_deeply( rownames($M_ref), [ '1. ', '2. ',  '3. ' ], 'rownames');
+is_deeply( colnames($M_ref), [ qw( Rating Title Year Votes) ],
+    'colnames');

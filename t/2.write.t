@@ -1,4 +1,4 @@
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Test::NoWarnings;
 use Test::LongString;
 
@@ -31,6 +31,14 @@ is_string(
 ( $FH, $filename ) = tempfile();
 write_table( [ [ 1, 2 ], [ 3, 4 ] ], $filename, sep => q{,} );
 is_string( slurp($filename), "1,2\n3,4\n", '2D array' );
+close $FH;
+
+( $FH, $filename ) = tempfile();
+
+print ${FH} "Hello World!\n"; 
+close $FH;
+write_table( [ [ 1, 2 ], [ 3, 4 ] ], $filename, sep => q{,}, append => 1 );
+is_string( slurp($filename), "Hello World!\n1,2\n3,4\n", '2D array' );
 
 sub slurp {
     my ($file) = @_;

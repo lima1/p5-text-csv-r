@@ -11,7 +11,8 @@ t/2.write.t
 t/3.rownames.t
 t/4.unicode.t
 t/testfiles/imdb.dat
-t/testfiles/imdb2.dat
+t/testfiles/imdbcsv2.dat
+t/testfiles/imdbdelim.dat
 t/testfiles/imdb3.dat
 t/testfiles/imdb4.dat
 t/testfiles/unicode.dat
