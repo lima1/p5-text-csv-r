@@ -9,8 +9,7 @@ verbose=11
 
 [-Miscellanea::ProhibitTies]
 
-[Miscellanea::RequireRcsKeywords]
-keywords = Date Author Revision
+[-Miscellanea::RequireRcsKeywords]
 
 [-ValuesAndExpressions::RequireInterpolationOfMetachars]
 
