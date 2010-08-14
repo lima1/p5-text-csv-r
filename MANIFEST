@@ -1,0 +1,24 @@
+Changes
+LICENSE
+Makefile.PL
+Build.PL
+MANIFEST
+README
+TODO
+t/Text-CSV-R.t
+t/1.read.t
+t/2.write.t
+t/3.rownames.t
+t/4.unicode.t
+t/testfiles/imdb.dat
+t/testfiles/imdb2.dat
+t/testfiles/imdb3.dat
+t/testfiles/imdb4.dat
+t/testfiles/unicode.dat
+t/testfiles/Routtable.dat
+t/testfiles/Routcsv.dat
+lib/Text/CSV/R.pm
+lib/Text/CSV/R/Matrix.pm
+xt/release/perlcriticrc
+xt/release/perlcritic.t
+META.yml                                 Module meta-data (added by MakeMaker)

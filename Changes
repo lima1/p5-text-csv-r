@@ -1,0 +1,7 @@
+Revision history for Perl extension Text::CSV::R.
+
+	- fixed typo in SYNOPSIS.
+
+0.01  Thu Jul 29 18:11:00 2010
+	- initial CPAN upload.
+
