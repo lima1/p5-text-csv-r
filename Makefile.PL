@@ -7,17 +7,26 @@ WriteMakefile(
     NAME         => 'Text::CSV::R',
     VERSION_FROM => 'lib/Text/CSV/R.pm',    # finds $VERSION
     PREREQ_PM    => {
-        'Text::CSV'        => 1.0,
-        'Carp'             => 0,
-        'Scalar::Util'     => 0,
+        'Text::CSV'    => 1.0,
+        'Carp'         => 0,
+        'Scalar::Util' => 0,
+
         # these for testing
         'Test::More'       => 0,
         'Test::NoWarnings' => 0,
         'Test::LongString' => 0,
         'File::Temp'       => 0,
     },                                      # e.g., Module::Name => 1.1
-    (     ( ExtUtils::MakeMaker->VERSION() gt '6.30' )
-        ? ( 'LICENSE' => 'perl' )
+    (   ( ExtUtils::MakeMaker->VERSION() gt '6.46' )
+        ? ( META_MERGE => {
+                resources => {
+                    repository => 'http://github.com/lima1/p5-text-csv-r',
+                },
+            }
+            )
+        : ()
+    ),
+    (   ( ExtUtils::MakeMaker->VERSION() gt '6.30' ) ? ( 'LICENSE' => 'perl' )
         : ()
     ),
     (   $] >= 5.005 ?    ## Add these new keywords supported since 5.005

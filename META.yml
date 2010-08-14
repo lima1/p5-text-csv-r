@@ -1,28 +1,33 @@
---- #YAML:1.0
-name:               Text-CSV-R
-version:            0.01
-abstract:           Text::CSV wrapper similar to R's read.table and write.table
+---
+abstract: "Text::CSV wrapper similar to R's read.table and write.table"
 author:
-    - M. Riester <limaone@cpan.org>
-license:            perl
-distribution_type:  module
-configure_requires:
-    ExtUtils::MakeMaker:  0
+  - 'M. Riester <limaone@cpan.org>'
 build_requires:
-    ExtUtils::MakeMaker:  0
-requires:
-    Carp:              0
-    File::Temp:        0
-    Scalar::Util:      0
-    Test::LongString:  0
-    Test::More:        0
-    Test::NoWarnings:  0
-    Text::CSV:         1
-no_index:
-    directory:
-        - t
-        - inc
-generated_by:       ExtUtils::MakeMaker version 6.54
+  File::Temp: 0
+  Test::LongString: 0
+  Test::More: 0
+  Test::NoWarnings: 0
+configure_requires:
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3607'
+license: perl
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Text-CSV-R
+provides:
+  Text::CSV::R:
+    file: lib/Text/CSV/R.pm
+    version: 0.02
+  Text::CSV::R::Matrix:
+    file: lib/Text/CSV/R/Matrix.pm
+    version: 0.02
+requires:
+  Carp: 0
+  Scalar::Util: 0
+  Text::CSV: 1
+  perl: v5.6.0
+resources:
+  license: http://dev.perl.org/licenses/
+  repository: http://github.com/lima1/p5-text-csv-r
+version: 0.02

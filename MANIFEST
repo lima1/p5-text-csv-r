@@ -22,4 +22,6 @@ lib/Text/CSV/R.pm
 lib/Text/CSV/R/Matrix.pm
 xt/release/perlcriticrc
 xt/release/perlcritic.t
+xt/release/pod.t
+xt/release/pod-coverage.t
 META.yml                                 Module meta-data (added by MakeMaker)

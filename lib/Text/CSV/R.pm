@@ -147,7 +147,7 @@ sub _get_fh {
 sub _replace_dec {
     my ( $data_ref, $opts ) = @_;
     if ( defined $opts->{dec} && $opts->{dec} ne q{.} ) {
-        for my $row (@$data_ref) {
+        for my $row (@{$data_ref}) {
             $row = [
                 map {
                     ( my $tmp = $_ ) =~ s/$opts->{dec}/./;
@@ -156,6 +156,7 @@ sub _replace_dec {
             ];
         }
     }
+    return;
 }
 
 sub _read {

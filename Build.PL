@@ -20,6 +20,11 @@ my $builder = Module::Build->new(
         'Test::LongString' => 0,
         'File::Temp'       => 0,
     }, 
+    meta_merge => {
+        resources => {
+            repository => 'http://github.com/lima1/p5-text-csv-r',
+        },
+    },
     add_to_cleanup      => [ 'Text-CSV-R-*' ],
 );
 
