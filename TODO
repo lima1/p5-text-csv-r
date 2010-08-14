@@ -1,2 +1,2 @@
-- more tests
-- there are some options not yet implemented (dec for write, append, ..)
+- there are some options not yet implemented (dec for write, ...)
+- better way of handling encondig? something that supports Perl 5.6?
