@@ -383,8 +383,17 @@ written (see L</OPTIONS>).  The C<$file> can be a filename or a filehandle.
   # the fields 
   write_table(\@array, $newfile); 
 
+Headers include no column for the row names, i.e. the number of columns in the
+header is the number of data columns - 1 if row names are provided.
+
 =item write_csv($array_ref, $file, %options)
-  
+
+Similar to 
+
+    write_table($file, sep_char => "\t" );
+
+Headers include a column for the row names.
+
 =item colnames($M, $array_ref)
 
 Get and set (if C<$array_ref> defined) the colnames.
