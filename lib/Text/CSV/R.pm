@@ -520,7 +520,7 @@ implementation. In doubt, consult the L<Text::CSV> documentation.
   Text::CSV   : 
   R           : append
   Default     : 
-  Description : Only relevant if ‘file’ is a character string.  If true,
+  Description : Only relevant if 'file' is a character string.  If true,
                 the output is appended to the file.  Otherwise, any
                 existing file of the name is destroyed.
 
