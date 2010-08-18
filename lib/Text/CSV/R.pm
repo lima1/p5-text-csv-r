@@ -289,8 +289,7 @@ LINE:
         last LINE if ( $opts->{nrow} >= 0 && $. > $opts->{nrow} );
     }
 
-    my $auto_col_row = ( defined $data[0] && scalar @{ $data[0] } == $max_cols
-        - 1 ) ? 1 : 0;
+    my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1 ? 1 : 0;
 
     # read column names
     if ( $auto_col_row || $opts->{header} ) {
