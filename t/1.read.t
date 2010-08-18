@@ -1,4 +1,4 @@
-use Test::More tests => 24;
+use Test::More tests => 25;
 use Test::NoWarnings;
 
 use Text::CSV::R qw(:all);
@@ -51,7 +51,8 @@ is_deeply( rownames($M_ref), [ "The Shawshank Redemption", "The Godfather",
 $M_ref = read_csv('t/testfiles/imdb.dat' );
 is_deeply( rownames($M_ref), [ qw(1 2 3) ], 'colnames');
 
-$M_ref = read_csv('t/testfiles/imdb4.dat', verbatim=>1 );
+$M_ref = read_csv('t/testfiles/imdb4.dat', dec=>q{.} );
+cmp_ok($M_ref->[0][1], '==', 9.1 , 'data correct');
 #
 # test read_csv2
 

@@ -207,14 +207,19 @@ sub _write {
     return;
 }
 
-sub _write_to_fh {
-    my ( $data_ref, $IN, $opts ) = @_;
-
-    my $tied_obj      = tied @{$data_ref};
-    my %text_csv_opts = %{$opts};
+sub _create_csv_obj {
+    my %text_csv_opts = @_;
     delete @text_csv_opts{ keys %{$R_OPT_MAP} };
     my $csv = Text::CSV->new( \%text_csv_opts )
         or croak q{Cannot use CSV: } . Text::CSV->error_diag();
+    return $csv;
+}
+
+sub _write_to_fh {
+    my ( $data_ref, $IN, $opts ) = @_;
+
+    my $tied_obj = tied @{$data_ref};
+    my $csv      = _create_csv_obj( %{$opts} );
 
     my $rownames
         = defined $opts->{row_names} ? $opts->{row_names}
@@ -257,40 +262,31 @@ sub _parse_fh {
     my @data;
 
     my $obj = tie @data, 'Text::CSV::R::Matrix';
-    my %text_csv_opts = %{$opts};
-    delete @text_csv_opts{ keys %{$R_OPT_MAP} };
-    my $csv = Text::CSV->new( \%text_csv_opts )
-        or croak q{Cannot use CSV: } . Text::CSV->error_diag();
 
-    # skip lines
-    my $line_number = 0;
-    while ( $line_number < $opts->{skip} && <$IN> ) {
-        $line_number++;
-    }
-    $line_number = 0;
+    my $csv = _create_csv_obj( %{$opts} );
+
+    # skip the first lines if option is set
+    $. = 0;
+    <$IN> while $. < $opts->{skip};
+    $. = 0;
+
     my $max_cols = 0;
 LINE:
     while ( my $line = <$IN> ) {
         chomp $line;
 
         # blank_lines_skip option
-        if ( !length($line)
-            && $opts->{'blank_lines_skip'} )
-        {
-            next LINE;
-        }
+        next LINE if !length($line) && $opts->{'blank_lines_skip'};
 
-        my $status = $csv->parse($line)
-            or croak q{Cannot parse CSV: } . $csv->error_input();
+        $csv->parse($line) or croak q{Cannot parse CSV: } . $csv->error_input();
+
         push @data, [ $csv->fields() ];
         if ( scalar( @{ $data[-1] } ) > $max_cols ) {
             $max_cols = scalar @{ $data[-1] };
         }
-        $line_number++;
 
         # nrow option. Store one more because file might contain header.
-        last LINE
-            if ( $opts->{nrow} >= 0 && $line_number > $opts->{nrow} );
+        last LINE if ( $opts->{nrow} >= 0 && $. > $opts->{nrow} );
     }
 
     my $auto_col_row = scalar @{ $data[0] } == $max_cols - 1 ? 1 : 0;
