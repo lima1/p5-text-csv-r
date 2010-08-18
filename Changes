@@ -2,8 +2,10 @@ Revision history for Perl extension Text::CSV::R.
 
 0.03
     - dec for writing
+    - col_names and row_names in write now support array references
     - fixed special characters in POD of append option
     - Bugfix: default dec of read_csv2 was q{.}, not q{,}
+    - Bugfix: col_names option in write ignored
 
 0.02  Sat Aug 14 19:00:00 2010
     - Option append

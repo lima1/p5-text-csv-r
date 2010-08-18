@@ -48,6 +48,7 @@ our $R_OPT_MAP = {
     header           => 'header',
     encoding         => 'encoding',
     row_names        => 'row_names',
+    col_names        => 'col_names',
     strip_white      => 'allow_whitespace',
     blank_lines_skip => 'blank_lines_skip',
     append           => 'append',
@@ -209,23 +210,30 @@ sub _write_to_fh {
         or croak q{Cannot use CSV: } . Text::CSV->error_diag();
 
     my $rownames
-        = !defined $tied_obj         ? 0
-        : defined $opts->{row_names} ? $opts->{row_names}
-        :                              1;
+        = defined $opts->{row_names} ? $opts->{row_names}
+        : defined $tied_obj          ? 1
+        :                              0;
     my $colnames
-        = !defined $tied_obj         ? 0
-        : defined $opts->{col_names} ? $opts->{col_names}
-        :                              1;
+        = defined $opts->{col_names} ? $opts->{col_names}
+        : defined $tied_obj          ? 1
+        :                              0;
 
     my @data = @{$data_ref};
 
     if ($rownames) {
-        @data = map { [ $tied_obj->{ROWNAMES}->[$_], @{ $data[$_] } ] }
-            0 .. $#data;
+        $rownames
+            = reftype \$rownames eq 'SCALAR'
+            ? rownames($data_ref)
+            : $rownames;
+        @data = map { [ $rownames->[$_], @{ $data[$_] } ] } 0 .. $#data;
     }
 
     if ($colnames) {
-        unshift @data, colnames($data_ref);
+        $colnames
+            = reftype \$colnames eq 'SCALAR'
+            ? colnames($data_ref)
+            : $colnames;
+        unshift @data, $colnames;
         if ( defined $opts->{hr} && $opts->{hr} ) {
             unshift @{ $data[0] }, q{};
         }
@@ -544,9 +552,11 @@ implementation. In doubt, consult the L<Text::CSV> documentation.
   Text::CSV   : 
   R           : col.names, row.names
   Default     : 1 if array is tied to Text::CSV::R::Matrix, 0 otherwise
-  Description : specifies whether col and rownames should be printed. Requires that
-                array is tied to Text::CSV::R::Matrix
-
+  Description : if scalar, then specifies whether col and rownames should be printed. 
+                Requires that array is tied to Text::CSV::R::Matrix. It is
+                also possible to provide the col and rownames by array
+                reference.
+                   
 =back
 
 =back
