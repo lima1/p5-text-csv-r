@@ -37,23 +37,14 @@ our $DEFAULT_OPTS = {
     blank_lines_skip => 1,
 };
 
-# A mapping of the R options to the Text:CSV options. If there is no
-# Text::CSV equivalent, the same option name is used (R options are
-# not passed to Text::CSV).
+# A mapping of the R options to the Text:CSV options. False if there is no
+# Text::CSV equivalent (specified because R options are not passed to Text::CSV).
 our $R_OPT_MAP = {
     sep              => 'sep_char',
-    dec              => 'dec',
-    quote            => 'quote_char',
-    skip             => 'skip',
-    nrow             => 'nrow',
-    header           => 'header',
-    encoding         => 'encoding',
-    row_names        => 'row_names',
-    col_names        => 'col_names',
     strip_white      => 'allow_whitespace',
-    blank_lines_skip => 'blank_lines_skip',
-    append           => 'append',
-    hr               => 'hr',              # header contains col for rownames?
+    quote            => 'quote_char',
+    map { $_ => 0 } qw(dec skip nrow header encoding row_names col_names
+    blank_lines_skip append hr),
 };
 
 sub colnames {
@@ -94,7 +85,7 @@ sub _merge_options {
     @ret{ keys %{$t_opt} } = values %{$t_opt};
     @ret{ keys %{$u_opt} } = values %{$u_opt};
     for my $k ( keys %{$R_OPT_MAP} ) {
-        if ( defined $ret{$k} ) {
+        if ( defined $ret{$k} && $R_OPT_MAP->{$k} ) {
             $ret{ $R_OPT_MAP->{$k} } = $ret{$k};
         }
     }
