@@ -25,14 +25,10 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.03';
 
-# these options are always defined, so we do not have to test this with defined
 our $DEFAULT_OPTS = {
-    header           => undef,
     skip             => 0,
     nrow             => -1,
     sep_char         => "\t",
-    quote_char       => q{"},
-    allow_whitespace => 0,
     binary           => 1,
     blank_lines_skip => 1,
 };
@@ -40,11 +36,12 @@ our $DEFAULT_OPTS = {
 # A mapping of the R options to the Text:CSV options. False if there is no
 # Text::CSV equivalent (specified because R options are not passed to Text::CSV).
 our $R_OPT_MAP = {
-    sep              => 'sep_char',
-    strip_white      => 'allow_whitespace',
-    quote            => 'quote_char',
-    map { $_ => 0 } qw(dec skip nrow header encoding row_names col_names
-    blank_lines_skip append hr),
+    sep         => 'sep_char',
+    strip_white => 'allow_whitespace',
+    quote       => 'quote_char',
+    map { $_ => 0 }
+        qw(dec skip nrow header encoding row_names col_names
+        blank_lines_skip append hr),
 };
 
 sub colnames {
