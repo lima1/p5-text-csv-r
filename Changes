@@ -3,6 +3,7 @@ Revision history for Perl extension Text::CSV::R.
 0.03
     - dec for writing
     - removed delete support for R::Matrix
+    - colnames() and rownames() setter now check if arguments are correct
     - col_names and row_names in write now support array references
     - fixed special characters in POD of append option
     - Bugfix: default dec of read_csv2 was q{.}, not q{,}
