@@ -23,7 +23,7 @@ our %EXPORT_TAGS = (
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 # these options are always defined, so we do not have to test this with defind
 our $DEFAULT_OPTS = {
