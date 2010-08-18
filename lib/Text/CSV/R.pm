@@ -59,20 +59,32 @@ our $R_OPT_MAP = {
 sub colnames {
     my ( $tied_ref, $values ) = @_;
     my $tied_obj = tied @{$tied_ref};
-    if ( defined $values ) { $tied_obj->{COLNAMES} = $values; }
+    if ( defined $values ) {
+        if ( !_is_array_ref($values) ) {
+            croak 'Invalid colnames length';
+        }
+        $tied_obj->{COLNAMES} = $values;
+    }
     return $tied_obj->{COLNAMES};
 }
 
 sub rownames {
     my ( $tied_ref, $values ) = @_;
     my $tied_obj = tied @{$tied_ref};
-    if ( defined $values && reftype $values eq 'ARRAY' ) {
-        if ( scalar @{$values} != scalar @{ $tied_obj->{ARRAY} } ) {
+    if ( defined $values ) {
+        if ( !_is_array_ref($values)
+            || scalar @{$values} != scalar @{ $tied_obj->{ARRAY} } )
+        {
             croak 'Invalid rownames length';
         }
         $tied_obj->{ROWNAMES} = $values;
     }
     return $tied_obj->{ROWNAMES};
+}
+
+sub _is_array_ref {
+    my ($values) = @_;
+    return ( defined reftype $values && reftype $values eq 'ARRAY' ) ? 1 : 0;
 }
 
 # merge the global default options, function defaults and user options
@@ -150,7 +162,7 @@ sub _replace_dec {
     my ( $data_ref, $opts, $read ) = @_;
     if ( defined $opts->{dec} && $opts->{dec} ne q{.} ) {
         for my $row ( @{$data_ref} ) {
-            $row = [ map { _replace_dec_col( $_, $opts, $read ) } @$row ];
+            $row = [ map { _replace_dec_col( $_, $opts, $read ) } @{$row} ];
         }
     }
     return;
@@ -159,11 +171,11 @@ sub _replace_dec {
 sub _replace_dec_col {
     my ( $col, $opts, $read ) = @_;
     if ($read) {
-        ( my $tmp = $col ) =~ s/$opts->{dec}/./;
+        ( my $tmp = $col ) =~ s{$opts->{dec}}{.}xms;
         $col = looks_like_number($tmp) ? $tmp : $col;
     }
     else {
-        $col =~ s/\./$opts->{dec}/
+        $col =~ s{\.}{$opts->{dec}}xms
             if looks_like_number($col);
     }
     return $col;
@@ -262,7 +274,7 @@ LINE:
         chomp $line;
 
         # blank_lines_skip option
-        if (  !length($line)
+        if ( !length($line)
             && $opts->{'blank_lines_skip'} )
         {
             next LINE;
