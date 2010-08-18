@@ -34,7 +34,8 @@ our $DEFAULT_OPTS = {
 };
 
 # A mapping of the R options to the Text:CSV options. False if there is no
-# Text::CSV equivalent (specified because R options are not passed to Text::CSV).
+# Text::CSV equivalent (specified because R options are not passed to
+# Text::CSV, so we need to know all of them).
 our $R_OPT_MAP = {
     sep         => 'sep_char',
     strip_white => 'allow_whitespace',
