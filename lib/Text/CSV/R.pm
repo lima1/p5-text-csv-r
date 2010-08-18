@@ -297,7 +297,7 @@ LINE:
     }
     else {
         colnames( \@data, [ map { 'V' . $_ } 1 .. $max_cols ] );
-        if ( $opts->{nrow} >= 0 ) {
+        if ( $opts->{nrow} >= 0 && $. > $opts->{nrow} ) {
             pop @data;
         }
     }

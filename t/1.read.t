@@ -41,7 +41,7 @@ cmp_ok(scalar(@$M_ref), '==', 2, 'number rows correct');
 is_deeply( colnames($M_ref), [ qw( V1 V2 V3 V4 V5 ) ],
     'colnames');
 
-$M_ref = read_csv('t/testfiles/imdb.dat', header=>0, );
+$M_ref = read_csv('t/testfiles/imdb.dat', header=>0, nrow=>99);
 cmp_ok(scalar(@$M_ref), '==', 4, 'number rows correct');
 is_deeply( colnames($M_ref), [ qw( V1 V2 V3 V4 V5 ) ],
     'colnames');
