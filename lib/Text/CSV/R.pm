@@ -15,9 +15,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
     'all' => [
-        qw(
-            read_csv read_csv2 read_table read_delim write_table write_csv rownames colnames
-            )
+        qw(read_csv read_csv2 read_table read_delim write_table write_csv rownames colnames)
     ]
 );
 
@@ -571,6 +569,8 @@ fixed number of columns.
 =back
 
 =head1 BUGS AND LIMITATIONS
+
+The encode option requires Perl 5.8 or newer.
 
 Please report any bugs or feature requests to
 C<bug-text-csv-r@rt.cpan.org>, or through the web interface at
