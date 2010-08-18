@@ -65,7 +65,7 @@ is_string( slurp($filename), "Hello World!\n1,2\n3,4\n", '2D array' );
 
 ( $FH, $filename ) = tempfile();
 write_table( [ [ 1.22, 2.33, 'Hello,World' ], [ 3.44, 4.55, 'Hello.World' ] ], $filename, sep => q{;}, dec
-    => q{,} );
+    => q{,}, append => 0 );
 is_string( slurp($filename), "1,22;2,33;Hello,World\n3,44;4,55;Hello.World\n", 'dec' );
 
 sub slurp {

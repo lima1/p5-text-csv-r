@@ -45,11 +45,6 @@ sub EXTEND {
     return;
 }
 
-sub DELETE {
-    my ( $self, $index ) = @_;
-    return $self->STORE( $index, q{} );
-}
-
 sub SPLICE {
     my $ob  = shift;
     my $sz  = $ob->FETCHSIZE;

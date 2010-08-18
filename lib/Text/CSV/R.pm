@@ -25,6 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.02';
 
+# these options are always defined, so we do not have to test this with defind
 our $DEFAULT_OPTS = {
     header           => undef,
     skip             => 0,
@@ -262,7 +263,6 @@ LINE:
 
         # blank_lines_skip option
         if (  !length($line)
-            && defined $opts->{'blank_lines_skip'}
             && $opts->{'blank_lines_skip'} )
         {
             next LINE;
@@ -278,20 +278,18 @@ LINE:
 
         # nrow option. Store one more because file might contain header.
         last LINE
-            if ( defined $opts->{nrow}
-            && $opts->{nrow} >= 0
-            && $line_number > $opts->{nrow} );
+            if ( $opts->{nrow} >= 0 && $line_number > $opts->{nrow} );
     }
 
     my $auto_col_row = scalar @{ $data[0] } == $max_cols - 1 ? 1 : 0;
 
     # read column names
-    if ( $auto_col_row || ( defined $opts->{header} && $opts->{header} ) ) {
+    if ( $auto_col_row || $opts->{header} ) {
         colnames( \@data, shift @data );
     }
     else {
         colnames( \@data, [ map { 'V' . $_ } 1 .. $max_cols ] );
-        if ( defined $opts->{nrow} && $opts->{nrow} >= 0 ) {
+        if ( $opts->{nrow} >= 0 ) {
             pop @data;
         }
     }
