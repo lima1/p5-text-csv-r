@@ -100,7 +100,7 @@ sub read_csv {
 
 sub read_csv2 {
     my ( $file, %u_opt ) = @_;
-    my $t_opt = { sep_char => q{;}, header => 1, };
+    my $t_opt = { sep_char => q{;}, dec => q{,}, header => 1, };
     return _read( $file, _merge_options( $t_opt, \%u_opt ) );
 }
 
@@ -145,15 +145,29 @@ sub _get_fh {
 
 # replace decimal point if necessary
 sub _replace_dec {
-    my ( $data_ref, $opts ) = @_;
+    my ( $data_ref, $opts, $read ) = @_;
     if ( defined $opts->{dec} && $opts->{dec} ne q{.} ) {
-        for my $row (@{$data_ref}) {
-            $row = [
-                map {
-                    ( my $tmp = $_ ) =~ s/$opts->{dec}/./;
-                    looks_like_number($tmp) ? $tmp : $_
-                    } @$row
-            ];
+        if ($read) {
+            for my $row ( @{$data_ref} ) {
+                $row = [
+                    map {
+                        ( my $tmp = $_ ) =~ s/$opts->{dec}/./;
+                        looks_like_number($tmp) ? $tmp : $_
+                        } @$row
+                ];
+            }
+        }
+        else {
+            for my $row ( @{$data_ref} ) {
+                $row = [
+                    map {
+                        s/\./$opts->{dec}/
+                            if looks_like_number($_);
+                        $_
+                        } @$row
+                ];
+            }
+
         }
     }
     return;
@@ -169,7 +183,7 @@ sub _read {
     if ($toclose) {
         close $fh or croak "Cannot close $file: $!";
     }
-    _replace_dec( $data_ref, $opts );
+    _replace_dec( $data_ref, $opts, 1 );
     return $data_ref;
 }
 
@@ -177,6 +191,7 @@ sub _write {
     my ( $data_ref, $file, $opts ) = @_;
 
     my ( $fh, $toclose ) = _get_fh( $file, 0, $opts );
+    _replace_dec( $data_ref, $opts, 0 );
     _write_to_fh( $data_ref, $fh, $opts );
     if ($toclose) {
         close $fh or croak "Cannot close $file: $!";
@@ -424,6 +439,13 @@ implementation. In doubt, consult the L<Text::CSV> documentation.
   Default    : \t 
   Description: the field separator character
 
+=item dec
+
+  Text::CSV   :  
+  R           : dec
+  Default     : .
+  Description : the character used in the file for decimal points.
+
 =item quote
 
   Text::CSV   : quote_char 
@@ -453,13 +475,6 @@ implementation. In doubt, consult the L<Text::CSV> documentation.
                 column names as its first line. If not specified, set to
                 1 if and only if the first row contains one fewer field 
                 than the row with the maximal number of fields.
-
-=item dec
-
-  Text::CSV   :  
-  R           : dec
-  Default     : .
-  Description : the character used in the file for decimal points.
 
 =item blank_lines_skip
 
@@ -552,8 +567,6 @@ L<Text::CSV> counterparts do not.
 
 =item There is no C<fill> option because Perl 2D arrays do not need to have a
 fixed number of columns.
-
-=item The C<dec> option is only supported for reading files.
 
 =back
 

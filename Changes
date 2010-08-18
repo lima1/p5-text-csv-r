@@ -1,5 +1,10 @@
 Revision history for Perl extension Text::CSV::R.
 
+0.03
+    - dec for writing
+    - fixed special characters in POD of append option
+    - Bugfix: default dec of read_csv2 was q{.}, not q{,}
+
 0.02  Sat Aug 14 19:00:00 2010
     - Option append
     - POD updates (write_table, write_csv, fixed typo in SYNOPSIS, added link

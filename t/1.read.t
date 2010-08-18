@@ -1,4 +1,4 @@
-use Test::More tests => 21;
+use Test::More tests => 22;
 use Test::NoWarnings;
 
 use Text::CSV::R qw(:all);
@@ -51,6 +51,9 @@ $M_ref = read_csv('t/testfiles/imdb4.dat', verbatim=>1 );
 # test read_csv2
 
 $M_ref = read_csv2('t/testfiles/imdbcsv2.dat', dec => "," );
+cmp_ok($M_ref->[0][1], '==', 9.1 , 'data correct');
+
+$M_ref = read_csv2('t/testfiles/imdbcsv2.dat' );
 cmp_ok($M_ref->[0][1], '==', 9.1 , 'data correct');
 
 # test auto header and row_names
