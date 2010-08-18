@@ -148,30 +148,24 @@ sub _get_fh {
 sub _replace_dec {
     my ( $data_ref, $opts, $read ) = @_;
     if ( defined $opts->{dec} && $opts->{dec} ne q{.} ) {
-        if ($read) {
-            for my $row ( @{$data_ref} ) {
-                $row = [
-                    map {
-                        ( my $tmp = $_ ) =~ s/$opts->{dec}/./;
-                        looks_like_number($tmp) ? $tmp : $_
-                        } @$row
-                ];
-            }
-        }
-        else {
-            for my $row ( @{$data_ref} ) {
-                $row = [
-                    map {
-                        s/\./$opts->{dec}/
-                            if looks_like_number($_);
-                        $_
-                        } @$row
-                ];
-            }
-
+        for my $row ( @{$data_ref} ) {
+            $row = [ map { _replace_dec_col( $_, $opts, $read ) } @$row ];
         }
     }
     return;
+}
+
+sub _replace_dec_col {
+    my ( $col, $opts, $read ) = @_;
+    if ($read) {
+        ( my $tmp = $col ) =~ s/$opts->{dec}/./;
+        $col = looks_like_number($tmp) ? $tmp : $col;
+    }
+    else {
+        $col =~ s/\./$opts->{dec}/
+            if looks_like_number($col);
+    }
+    return $col;
 }
 
 sub _read {
@@ -297,7 +291,7 @@ LINE:
     }
     else {
         colnames( \@data, [ map { 'V' . $_ } 1 .. $max_cols ] );
-        if ( defined $opts->{nrow} && scalar(@data) > $opts->{nrow} ) {
+        if ( defined $opts->{nrow} && $opts->{nrow} >= 0 ) {
             pop @data;
         }
     }

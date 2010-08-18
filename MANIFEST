@@ -17,6 +17,7 @@ t/testfiles/imdb3.dat
 t/testfiles/imdb4.dat
 t/testfiles/unicode.dat
 t/testfiles/Routtable.dat
+t/testfiles/RouttableNoColRow.dat
 t/testfiles/Routcsv.dat
 lib/Text/CSV/R.pm
 lib/Text/CSV/R/Matrix.pm

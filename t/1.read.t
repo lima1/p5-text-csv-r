@@ -1,4 +1,4 @@
-use Test::More tests => 22;
+use Test::More tests => 24;
 use Test::NoWarnings;
 
 use Text::CSV::R qw(:all);
@@ -37,8 +37,13 @@ cmp_ok(scalar(@$M_ref), '==', 2, 'number rows correct');
 is_deeply( colnames($M_ref), [ qw( V1 V2 V3 V4 V5 ) ],
     'colnames');
 
+$M_ref = read_csv('t/testfiles/imdb.dat', header=>0 );
+cmp_ok(scalar(@$M_ref), '==', 4, 'number rows correct');
+is_deeply( colnames($M_ref), [ qw( V1 V2 V3 V4 V5 ) ],
+    'colnames');
+
 # test row.names option
-$M_ref = read_csv('t/testfiles/imdb.dat',  'row_names' =>2, dec=> q{,} );
+$M_ref = read_csv('t/testfiles/imdb.dat',  'row_names' =>2, dec=> q{,});
 cmp_ok($M_ref->[0][2], '==', 1994, 'data correct');
 cmp_ok($M_ref->[0][1], '==', 9.1 , 'data correct');
 is_deeply( rownames($M_ref), [ "The Shawshank Redemption", "The Godfather",

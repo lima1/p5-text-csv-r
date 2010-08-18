@@ -1,4 +1,4 @@
-use Test::More tests => 8;
+use Test::More tests => 9;
 use Test::NoWarnings;
 use Test::LongString;
 
@@ -17,6 +17,16 @@ is_string(
     slurp('t/testfiles/Routtable.dat'),
     'same as input again'
 );
+close $FH;
+
+( $FH, $filename ) = tempfile();
+write_table( $M_ref, $filename, sep => q{,}, col_names => 0, row_names => 0 );
+is_string(
+    slurp($filename),
+    slurp('t/testfiles/RouttableNoColRow.dat'),
+    'same as input again, without col/rownames'
+);
+close $FH;
 
 ( $FH, $filename ) = tempfile();
 write_csv( $M_ref, $FH );
