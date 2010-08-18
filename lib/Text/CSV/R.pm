@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.03';
 
-# these options are always defined, so we do not have to test this with defind
+# these options are always defined, so we do not have to test this with defined
 our $DEFAULT_OPTS = {
     header           => undef,
     skip             => 0,
