@@ -22,6 +22,7 @@ t/testfiles/Routcsv.dat
 lib/Text/CSV/R.pm
 lib/Text/CSV/R/Matrix.pm
 xt/release/perlcriticrc
+xt/release/perltidyrc
 xt/release/perlcritic.t
 xt/release/pod.t
 xt/release/pod-coverage.t

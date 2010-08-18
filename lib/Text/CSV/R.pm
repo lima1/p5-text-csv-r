@@ -266,9 +266,10 @@ sub _parse_fh {
     my $csv = _create_csv_obj( %{$opts} );
 
     # skip the first lines if option is set
-    $. = 0;
-    do {} while ($. < $opts->{skip} && <$IN>);
-    $. = 0;
+    {
+        local $. = 0;
+        do { } while ( $. < $opts->{skip} && <$IN> );
+    }
 
     my $max_cols = 0;
 LINE:
@@ -278,8 +279,8 @@ LINE:
         # blank_lines_skip option
         next LINE if !length($line) && $opts->{'blank_lines_skip'};
 
-        $csv->parse($line) or croak q{Cannot parse CSV: } . $csv->error_input();
-
+        $csv->parse($line)
+            or croak q{Cannot parse CSV: } . $csv->error_input();
         push @data, [ $csv->fields() ];
         if ( scalar( @{ $data[-1] } ) > $max_cols ) {
             $max_cols = scalar @{ $data[-1] };

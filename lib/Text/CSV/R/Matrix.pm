@@ -49,8 +49,8 @@ sub SPLICE {
     my $ob  = shift;
     my $sz  = $ob->FETCHSIZE;
     my $off = @_ ? shift : 0;
-    if ($off < 0) {
-        $off += $sz
+    if ( $off < 0 ) {
+        $off += $sz;
     }
     my $len = @_ ? shift : $sz - $off;
 
