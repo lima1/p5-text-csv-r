@@ -267,7 +267,7 @@ sub _parse_fh {
 
     # skip the first lines if option is set
     $. = 0;
-    <$IN> while $. < $opts->{skip};
+    do {} while ($. < $opts->{skip} && <$IN>);
     $. = 0;
 
     my $max_cols = 0;
@@ -289,7 +289,8 @@ LINE:
         last LINE if ( $opts->{nrow} >= 0 && $. > $opts->{nrow} );
     }
 
-    my $auto_col_row = scalar @{ $data[0] } == $max_cols - 1 ? 1 : 0;
+    my $auto_col_row = ( defined $data[0] && scalar @{ $data[0] } == $max_cols
+        - 1 ) ? 1 : 0;
 
     # read column names
     if ( $auto_col_row || $opts->{header} ) {

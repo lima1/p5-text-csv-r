@@ -1,4 +1,4 @@
-use Test::More tests => 25;
+use Test::More tests => 26;
 use Test::NoWarnings;
 
 use Text::CSV::R qw(:all);
@@ -16,6 +16,10 @@ is_deeply( colnames($M_ref), [ '1. ' ,9.1,'The Shawshank Redemption',1994,403610
     'skip');
 
 cmp_ok(scalar(@$M_ref), '==', 2, 'number rows correct');
+
+$M_ref = read_csv('t/testfiles/imdb.dat', skip=>99 );
+
+cmp_ok(scalar(@$M_ref), '==', 0, 'number rows correct');
 
 # test blank_lines_skip option
 $M_ref = read_csv('t/testfiles/imdb.dat',  skip=>1,blank_lines_skip => 0 );
@@ -37,7 +41,7 @@ cmp_ok(scalar(@$M_ref), '==', 2, 'number rows correct');
 is_deeply( colnames($M_ref), [ qw( V1 V2 V3 V4 V5 ) ],
     'colnames');
 
-$M_ref = read_csv('t/testfiles/imdb.dat', header=>0 );
+$M_ref = read_csv('t/testfiles/imdb.dat', header=>0, );
 cmp_ok(scalar(@$M_ref), '==', 4, 'number rows correct');
 is_deeply( colnames($M_ref), [ qw( V1 V2 V3 V4 V5 ) ],
     'colnames');
