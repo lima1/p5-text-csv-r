@@ -161,9 +161,8 @@ sub _replace_dec_col {
         ( my $tmp = $col ) =~ s{$opts->{dec}}{.}xms;
         $col = looks_like_number($tmp) ? $tmp : $col;
     }
-    else {
-        $col =~ s{\.}{$opts->{dec}}xms
-            if looks_like_number($col);
+    elsif ( looks_like_number($col) ) {
+        $col =~ s{\.}{$opts->{dec}}xms;
     }
     return $col;
 }
@@ -171,10 +170,8 @@ sub _replace_dec_col {
 sub _read {
     my ( $file, $opts ) = @_;
 
-    my $data_ref;
-
     my ( $fh, $toclose ) = _get_fh( $file, 1, $opts );
-    $data_ref = _parse_fh( $fh, $opts );
+    my $data_ref = _parse_fh( $fh, $opts );
     if ($toclose) {
         close $fh or croak "Cannot close $file: $!";
     }
@@ -420,7 +417,7 @@ Get and set (if C<$array_ref> defined) the rownames.
 All non-R options are passed to L<Text::CSV>. Listed are now the supported R
 options. If there is a L<Text::CSV> equivalent, you can either use the
 L<Text::CSV> or the R option name. There might be subtle differences to the R
-implementation. In doubt, consult the L<Text::CSV> documentation.
+implementation. 
 
 =over
 
