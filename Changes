@@ -1,6 +1,6 @@
 Revision history for Perl extension Text::CSV::R.
 
-0.03
+0.03 Thu Aug 18 20:30:00 2010
     - dec for writing
     - removed delete support for R::Matrix
     - colnames() and rownames() setter now check if arguments are correct
