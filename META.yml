@@ -18,10 +18,10 @@ name: Text-CSV-R
 provides:
   Text::CSV::R:
     file: lib/Text/CSV/R.pm
-    version: 0.02
+    version: 0.03
   Text::CSV::R::Matrix:
     file: lib/Text/CSV/R/Matrix.pm
-    version: 0.02
+    version: 0.03
 requires:
   Carp: 0
   Scalar::Util: 0
@@ -30,4 +30,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://github.com/lima1/p5-text-csv-r
-version: 0.02
+version: 0.03
