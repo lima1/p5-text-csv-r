@@ -23,14 +23,6 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.1';
 
-our $DEFAULT_OPTS = {
-    skip             => 0,
-    nrow             => -1,
-    sep_char         => "\t",
-    binary           => 1,
-    blank_lines_skip => 1,
-};
-
 # A mapping of the R options to the Text:CSV options. False if there is no
 # Text::CSV equivalent (specified because R options are not passed to
 # Text::CSV, so we need to know all of them).
@@ -46,7 +38,13 @@ our $R_OPT_MAP = {
 # merge the global default options, function defaults and user options
 sub _merge_options {
     my ( $t_opt, $u_opt ) = @_;
-    my %ret = %{$DEFAULT_OPTS};
+    my %ret = (
+        skip             => 0,
+        nrow             => -1,
+        sep_char         => "\t",
+        binary           => 1,
+        blank_lines_skip => 1,
+    );
     @ret{ keys %{$t_opt} } = values %{$t_opt};
     @ret{ keys %{$u_opt} } = values %{$u_opt};
     for my $k ( keys %{$R_OPT_MAP} ) {
@@ -430,7 +428,7 @@ implementation.
   Text::CSV   : 
   R           : encoding
   Default     : 
-  Description : if specified, the file is opened with '<:encoding(value)' 
+  Description : if specified, the file is opened with ':encoding(value)' 
 
 =back
 
