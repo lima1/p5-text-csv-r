@@ -1,5 +1,5 @@
-Text-CSV-R version 0.03
-=======================
+Text-CSV-R version 0.1
+======================
 
 This is just a convinient wrapper around Text::CSV. It behavious mostly
 like R's read.table and write.table functions. This module has a very simple

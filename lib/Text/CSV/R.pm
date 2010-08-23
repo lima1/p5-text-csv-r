@@ -21,7 +21,7 @@ our %EXPORT_TAGS = (
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '0.03';
+our $VERSION = '0.1';
 
 our $DEFAULT_OPTS = {
     skip             => 0,
@@ -42,37 +42,6 @@ our $R_OPT_MAP = {
         qw(dec skip nrow header encoding row_names col_names
         blank_lines_skip append hr),
 };
-
-sub colnames {
-    my ( $tied_ref, $values ) = @_;
-    my $tied_obj = tied @{$tied_ref};
-    if ( defined $values ) {
-        if ( !_is_array_ref($values) ) {
-            croak 'Invalid colnames length';
-        }
-        $tied_obj->{COLNAMES} = $values;
-    }
-    return $tied_obj->{COLNAMES};
-}
-
-sub rownames {
-    my ( $tied_ref, $values ) = @_;
-    my $tied_obj = tied @{$tied_ref};
-    if ( defined $values ) {
-        if ( !_is_array_ref($values)
-            || scalar @{$values} != scalar @{ $tied_obj->{ARRAY} } )
-        {
-            croak 'Invalid rownames length';
-        }
-        $tied_obj->{ROWNAMES} = $values;
-    }
-    return $tied_obj->{ROWNAMES};
-}
-
-sub _is_array_ref {
-    my ($values) = @_;
-    return ( defined reftype $values && reftype $values eq 'ARRAY' ) ? 1 : 0;
-}
 
 # merge the global default options, function defaults and user options
 sub _merge_options {
@@ -121,6 +90,16 @@ sub write_csv {
     my ( $data_ref, $file, %u_opt ) = @_;
     my $t_opt = { eol => "\n", hr => 1, sep_char => q{,} };
     return _write( $data_ref, $file, _merge_options( $t_opt, \%u_opt ) );
+}
+
+sub rownames {
+    my ( $tied_ref, $values ) = @_;
+    return Text::CSV::R::Matrix::_rownames( tied @{$tied_ref}, $values );
+}
+
+sub colnames {
+    my ( $tied_ref, $values ) = @_;
+    return Text::CSV::R::Matrix::_colnames( tied @{$tied_ref}, $values );
 }
 
 # check if $file is a filehandle, if not open file with correct encoding.

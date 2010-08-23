@@ -5,11 +5,13 @@ require 5.005;
 use strict;
 use warnings;
 
+use Carp;
 use Tie::Array;
+use Scalar::Util qw(reftype looks_like_number);
 
 our @ISA = 'Tie::Array';
 
-our $VERSION = '0.03';
+our $VERSION = '0.1';
 
 sub TIEARRAY {
     my ($self) = @_;
@@ -58,6 +60,35 @@ sub SPLICE {
     my @rn = map {q{}} @_;
     splice @{ $ob->{ROWNAMES} }, $off, $len, @rn;
     return splice @{ $ob->{ARRAY} }, $off, $len, @_;
+}
+
+sub _colnames {
+    my ( $self, $values ) = @_;
+    if ( defined $values ) {
+        if ( !_is_array_ref($values) ) {
+            croak 'Invalid colnames length';
+        }
+        $self->{COLNAMES} = $values;
+    }
+    return $self->{COLNAMES};
+}
+
+sub _rownames {
+    my ( $self, $values ) = @_;
+    if ( defined $values ) {
+        if ( !_is_array_ref($values)
+            || scalar @{$values} != scalar @{ $self->{ARRAY} } )
+        {
+            croak 'Invalid rownames length';
+        }
+        $self->{ROWNAMES} = $values;
+    }
+    return $self->{ROWNAMES};
+}
+
+sub _is_array_ref {
+    my ($values) = @_;
+    return ( defined reftype $values && reftype $values eq 'ARRAY' ) ? 1 : 0;
 }
 
 1;
