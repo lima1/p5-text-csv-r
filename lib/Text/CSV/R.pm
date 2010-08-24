@@ -181,11 +181,11 @@ sub _write_to_fh {
 
     my $tied_obj = tied @{$data_ref};
     my $csv      = _create_csv_obj( %{$opts} );
-    
+
     # do we have and want col/rownames?
     my %meta = map {
               $_ => defined $opts->{$_} ? $opts->{$_}
-            : defined $tied_obj ? 1    
+            : defined $tied_obj ? 1
             : 0
     } qw(row_names col_names);
 
@@ -250,6 +250,9 @@ LINE:
         last LINE if ( $opts->{nrow} >= 0 && $. > $opts->{nrow} );
     }
 
+   # If first line contains exactly one column less than the one with the
+   # max. number of columns, we expect that first line contains the header and
+   # first column the rownames (like read.tables does)
     my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1 ? 1 : 0;
 
     # read column names
@@ -263,18 +266,17 @@ LINE:
         }
     }
 
-    # read row names
+    # in which column are rownames?
+    my $rowname_id
+        = $auto_col_row ? 0
+        : ( defined $opts->{row_names}
+            && reftype \$opts->{row_names} eq 'SCALAR' ) ? $opts->{row_names}
+        : -1;
+
     my @rownames;
-    if ($auto_col_row) {
+    if ( $rowname_id >= 0 ) {
         for my $row (@data) {
-            push @rownames, shift @{$row};
-        }
-    }
-    elsif ( defined $opts->{row_names}
-        && reftype \$opts->{row_names} eq 'SCALAR' )
-    {
-        for my $row (@data) {
-            push @rownames, splice @{$row}, $opts->{row_names}, 1;
+            push @rownames, splice @{$row}, $rowname_id, 1;
         }
     }
     else {
