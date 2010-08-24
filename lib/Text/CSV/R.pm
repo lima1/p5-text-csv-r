@@ -181,10 +181,11 @@ sub _write_to_fh {
 
     my $tied_obj = tied @{$data_ref};
     my $csv      = _create_csv_obj( %{$opts} );
-
+    
+    # do we have and want col/rownames?
     my %meta = map {
               $_ => defined $opts->{$_} ? $opts->{$_}
-            : defined $tied_obj ? 1
+            : defined $tied_obj ? 1    
             : 0
     } qw(row_names col_names);
 
