@@ -274,8 +274,7 @@ LINE:
         && reftype \$opts->{row_names} eq 'SCALAR' )
     {
         for my $row (@data) {
-            push @rownames, $row->[ $opts->{row_names} ];
-            splice @{$row}, $opts->{row_names}, 1;
+            push @rownames, splice @{$row}, $opts->{row_names}, 1;
         }
     }
     else {
