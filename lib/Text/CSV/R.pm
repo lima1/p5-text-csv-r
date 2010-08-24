@@ -255,12 +255,18 @@ LINE:
    # first column the rownames (like read.tables does)
     my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1 ? 1 : 0;
 
-    # read column names
     if ( $auto_col_row || $opts->{header} ) {
+
+        # first line contains header
         colnames( \@data, shift @data );
     }
     else {
+
+        # no column names specified, then use the same default as R
         colnames( \@data, [ map { 'V' . $_ } 1 .. $max_cols ] );
+
+        # we might have parsed one line more than needed with the nrow option,
+        # so fix that if necessary
         if ( $opts->{nrow} >= 0 && $. > $opts->{nrow} ) {
             pop @data;
         }
