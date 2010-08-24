@@ -92,12 +92,12 @@ sub write_csv {
 
 sub rownames {
     my ( $tied_ref, $values ) = @_;
-    return Text::CSV::R::Matrix::_rownames( tied @{$tied_ref}, $values );
+    return Text::CSV::R::Matrix::ROWNAMES( tied @{$tied_ref}, $values );
 }
 
 sub colnames {
     my ( $tied_ref, $values ) = @_;
-    return Text::CSV::R::Matrix::_colnames( tied @{$tied_ref}, $values );
+    return Text::CSV::R::Matrix::COLNAMES( tied @{$tied_ref}, $values );
 }
 
 # check if $file is a filehandle, if not open file with correct encoding.
@@ -550,13 +550,9 @@ Please report any bugs or feature requests to
 C<bug-text-csv-r@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org>. 
 
-=head1 AUTHOR
-
-M. Riester, E<lt>limaone@cpan.orgE<gt>
-
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2010 by M. Riester.
+Copyright (C) 2010 E<lt>limaone@cpan.orgE<gt>
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.

@@ -62,7 +62,7 @@ sub SPLICE {
     return splice @{ $ob->{ARRAY} }, $off, $len, @_;
 }
 
-sub _colnames {
+sub COLNAMES {
     my ( $self, $values ) = @_;
     if ( defined $values ) {
         if ( !_is_array_ref($values) ) {
@@ -73,7 +73,7 @@ sub _colnames {
     return $self->{COLNAMES};
 }
 
-sub _rownames {
+sub ROWNAMES {
     my ( $self, $values ) = @_;
     if ( defined $values ) {
         if ( !_is_array_ref($values)
@@ -103,17 +103,30 @@ Text::CSV::R::Matrix - Tied array with column and row names.
 This is the return object of the Text::CSV::R read_* functions. 
 It's just a (two-dimensional) array with column and row names attached.
 
+=head1 INTERFACE
+
+The following subroutines are not exported. You should use the subroutines
+exported by L<Text::CSV::R> instead.
+
+=over
+
+=item COLNAMES(@tied_array, $array_ref) 
+
+Get and set (if C<$array_ref> defined) the colnames.
+
+=item ROWNAMES(@tied_array, $array_ref) 
+
+Get and set (if C<$array_ref> defined) the rownames.
+
+=back
+
 =head1 SEE ALSO
 
 L<Text::CSV>, L<Text::CSV::R>
 
-=head1 AUTHOR
-
-M. Riester, E<lt>limaone@cpan.orgE<gt>
-
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2010 by M. Riester.
+Copyright (C) 2010 E<lt>limaone@cpan.orgE<gt>
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.
