@@ -104,21 +104,20 @@ sub colnames {
 # encoding.  return also whether to close the filehandle or not
 sub _get_fh {
     my ( $file, $read, $opts ) = @_;
-
-    if ( !openhandle( $file ) ) {
-        my $encoding = q{};
-        if ( defined $opts->{encoding} && length $opts->{encoding} > 0 ) {
-            $encoding = ':encoding(' . $opts->{encoding} . ')';
-        }
-        my $mode
-            = $read ? '<'
-            : ( defined $opts->{append} && $opts->{append} ) ? '>>'
-            :                                                  '>';
-        open my $IN, $mode . $encoding, $file
-            or croak "Cannot open $file for reading: $!";
-        return ( $IN, 1 );
+    if ( openhandle($file) ) {
+        return ( $file, 0 );
     }
-    return ( $file, 0 );
+    my $encoding = q{};
+    if ( defined $opts->{encoding} && length $opts->{encoding} > 0 ) {
+        $encoding = ':encoding(' . $opts->{encoding} . ')';
+    }
+    my $mode
+        = $read ? '<'
+        : ( defined $opts->{append} && $opts->{append} ) ? '>>'
+        :                                                  '>';
+    open my $IN, $mode . $encoding, $file
+        or croak "Cannot open $file for reading: $!";
+    return ( $IN, 1 );
 }
 
 # replace decimal point if necessary
@@ -259,18 +258,21 @@ LINE:
     my $rowname_id
         = ( defined $opts->{row_names}
             && reftype \$opts->{row_names} eq 'SCALAR' ) ? $opts->{row_names}
-        : $auto_col_row ? 0 : -1;
+        : $auto_col_row ? 0
+        :                 -1;
 
-    # re-add the column name if it is omitted. use the same default name as R    
+    # re-add the column name if it is omitted. use the same default name as R
     if ($auto_col_row) {
         unshift @{ $data[0] }, 'row.names';
     }
 
     if ( $auto_col_row || $opts->{header} ) {
+
         # first line contains header
         colnames( \@data, shift @data );
     }
     else {
+
         # no column names specified, then use the same default as R
         colnames( \@data, [ map { 'V' . $_ } 1 .. $max_cols ] );
 
@@ -286,16 +288,16 @@ LINE:
         for my $row (@data) {
             push @rownames, splice @{$row}, $rowname_id, 1;
         }
+
         # remove the column from the colnames array
-        my @colnames = @{ colnames(\@data) };
+        my @colnames = @{ colnames( \@data ) };
         splice @colnames, $rowname_id, 1;
-        colnames(\@data, \@colnames);
+        colnames( \@data, \@colnames );
     }
     else {
         @rownames = 1 .. scalar @data;
     }
     rownames( \@data, \@rownames );
-
 
     return \@data;
 }
