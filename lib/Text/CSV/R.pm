@@ -182,31 +182,29 @@ sub _write_to_fh {
     my $tied_obj = tied @{$data_ref};
     my $csv      = _create_csv_obj( %{$opts} );
 
-    my $rownames
-        = defined $opts->{row_names} ? $opts->{row_names}
-        : defined $tied_obj          ? 1
-        :                              0;
-    my $colnames
-        = defined $opts->{col_names} ? $opts->{col_names}
-        : defined $tied_obj          ? 1
-        :                              0;
+    my %meta = map {
+              $_ => defined $opts->{$_} ? $opts->{$_}
+            : defined $tied_obj ? 1
+            : 0
+    } qw(row_names col_names);
 
     my @data = @{$data_ref};
 
-    if ($rownames) {
-        $rownames
-            = reftype \$rownames eq 'SCALAR'
+    if ( $meta{row_names} ) {
+        $meta{row_names}
+            = reftype \$meta{row_names} eq 'SCALAR'
             ? rownames($data_ref)
-            : $rownames;
-        @data = map { [ $rownames->[$_], @{ $data[$_] } ] } 0 .. $#data;
+            : $meta{row_names};
+        @data
+            = map { [ $meta{row_names}->[$_], @{ $data[$_] } ] } 0 .. $#data;
     }
 
-    if ($colnames) {
-        $colnames
-            = reftype \$colnames eq 'SCALAR'
+    if ( $meta{col_names} ) {
+        $meta{col_names}
+            = reftype \$meta{col_names} eq 'SCALAR'
             ? colnames($data_ref)
-            : $colnames;
-        unshift @data, $colnames;
+            : $meta{col_names};
+        unshift @data, $meta{col_names};
         if ( defined $opts->{hr} && $opts->{hr} ) {
             unshift @{ $data[0] }, q{};
         }
