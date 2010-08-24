@@ -267,8 +267,7 @@ LINE:
     my @rownames;
     if ($auto_col_row) {
         for my $row (@data) {
-            push @rownames, $row->[0];
-            shift @{$row};
+            push @rownames, shift @{$row};
         }
     }
     elsif ( defined $opts->{row_names}
