@@ -6,7 +6,7 @@ use Module::Build;
 my $builder = Module::Build->new(
     module_name         => 'Text::CSV::R',
     license             => 'perl',
-    dist_author         => 'M. Riester <limaone@cpan.org>',
+    dist_author         => '<limaone@cpan.org>',
     dist_version_from   => 'lib/Text/CSV/R.pm',
     requires => {
         'perl'           => '5.6.0', 

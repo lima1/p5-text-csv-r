@@ -1,7 +1,7 @@
 ---
 abstract: "Text::CSV wrapper similar to R's read.table and write.table"
 author:
-  - 'M. Riester <limaone@cpan.org>'
+  - '<limaone@cpan.org>'
 build_requires:
   File::Temp: 0
   Test::LongString: 0
@@ -18,10 +18,10 @@ name: Text-CSV-R
 provides:
   Text::CSV::R:
     file: lib/Text/CSV/R.pm
-    version: 0.03
+    version: 0.1
   Text::CSV::R::Matrix:
     file: lib/Text/CSV/R/Matrix.pm
-    version: 0.03
+    version: 0.1
 requires:
   Carp: 0
   Scalar::Util: 0
@@ -30,4 +30,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://github.com/lima1/p5-text-csv-r
-version: 0.03
+version: 0.1

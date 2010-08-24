@@ -1,4 +1,4 @@
-use Test::More tests => 26;
+use Test::More tests => 28;
 use Test::NoWarnings;
 
 use Text::CSV::R qw(:all);
@@ -51,7 +51,13 @@ $M_ref = read_csv('t/testfiles/imdb.dat',  'row_names' =>2, dec=> q{,});
 cmp_ok($M_ref->[0][2], '==', 1994, 'data correct');
 cmp_ok($M_ref->[0][1], '==', 9.1 , 'data correct');
 is_deeply( rownames($M_ref), [ "The Shawshank Redemption", "The Godfather",
-    "The Godfather: Part II" ], 'colnames');
+    "The Godfather: Part II" ], 'rownames');
+is_deeply( colnames($M_ref), [ qw(Rank Rating Year Votes) ], 'colnames');
+
+# test colnames if autoheader and row_names
+$M_ref = read_csv('t/testfiles/imdb3.dat',  'row_names' =>2);
+is_deeply( colnames($M_ref), [ qw(row.names Rating Year Votes) ], 'colnames');
+
 $M_ref = read_csv('t/testfiles/imdb.dat' );
 is_deeply( rownames($M_ref), [ qw(1 2 3) ], 'colnames');
 

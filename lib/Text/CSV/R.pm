@@ -255,13 +255,22 @@ LINE:
    # first column the rownames (like read.tables does)
     my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1 ? 1 : 0;
 
-    if ( $auto_col_row || $opts->{header} ) {
+    # in which column are rownames?
+    my $rowname_id
+        = ( defined $opts->{row_names}
+            && reftype \$opts->{row_names} eq 'SCALAR' ) ? $opts->{row_names}
+        : $auto_col_row ? 0 : -1;
 
+    # re-add the column name if it is omitted. use the same default name as R    
+    if ($auto_col_row) {
+        unshift @{ $data[0] }, 'row.names';
+    }
+
+    if ( $auto_col_row || $opts->{header} ) {
         # first line contains header
         colnames( \@data, shift @data );
     }
     else {
-
         # no column names specified, then use the same default as R
         colnames( \@data, [ map { 'V' . $_ } 1 .. $max_cols ] );
 
@@ -272,23 +281,22 @@ LINE:
         }
     }
 
-    # in which column are rownames?
-    my $rowname_id
-        = $auto_col_row ? 0
-        : ( defined $opts->{row_names}
-            && reftype \$opts->{row_names} eq 'SCALAR' ) ? $opts->{row_names}
-        : -1;
-
     my @rownames;
     if ( $rowname_id >= 0 ) {
         for my $row (@data) {
             push @rownames, splice @{$row}, $rowname_id, 1;
         }
+        # remove the column from the colnames array
+        my @colnames = @{ colnames(\@data) };
+        splice @colnames, $rowname_id, 1;
+        colnames(\@data, \@colnames);
     }
     else {
         @rownames = 1 .. scalar @data;
     }
     rownames( \@data, \@rownames );
+
+
     return \@data;
 }
 

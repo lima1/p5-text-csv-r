@@ -33,7 +33,7 @@ WriteMakefile(
             (
             ABSTRACT_FROM =>
                 'lib/Text/CSV/R.pm',    # retrieve abstract from module
-            AUTHOR => 'M. Riester <limaone@cpan.org>'
+            AUTHOR => '<limaone@cpan.org>'
             )
         : ()
     ),
