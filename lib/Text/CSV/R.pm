@@ -9,7 +9,7 @@ require Exporter;
 use Text::CSV;
 use Text::CSV::R::Matrix;
 use Carp;
-use Scalar::Util qw(reftype looks_like_number);
+use Scalar::Util qw(reftype looks_like_number openhandle);
 
 our @ISA = qw(Exporter);
 
@@ -100,12 +100,12 @@ sub colnames {
     return Text::CSV::R::Matrix::COLNAMES( tied @{$tied_ref}, $values );
 }
 
-# check if $file is a filehandle, if not open file with correct encoding.
-# return also whether to close the filehandle or not
+# check if $file is an open filehandle, if not open file with correct
+# encoding.  return also whether to close the filehandle or not
 sub _get_fh {
     my ( $file, $read, $opts ) = @_;
 
-    if ( reftype \$file eq 'SCALAR' ) {
+    if ( !openhandle( $file ) ) {
         my $encoding = q{};
         if ( defined $opts->{encoding} && length $opts->{encoding} > 0 ) {
             $encoding = ':encoding(' . $opts->{encoding} . ')';

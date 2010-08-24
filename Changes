@@ -1,6 +1,9 @@
 Revision history for Perl extension Text::CSV::R.
 
-0.03 Thu Aug 18 20:30:00 2010
+0.1  Thu Aug 18 2010
+    - code cleanup
+
+0.03 Thu Aug 18 2010
     - dec for writing
     - removed delete support for R::Matrix
     - colnames() and rownames() setter now check if arguments are correct
@@ -11,13 +14,13 @@ Revision history for Perl extension Text::CSV::R.
     - Bugfix: default dec of read_csv2 was q{.}, not q{,}
     - Bugfix: col_names option in write ignored
 
-0.02  Sat Aug 14 19:00:00 2010
+0.02  Sat Aug 14 2010
     - Option append
     - POD updates (write_table, write_csv, fixed typo in SYNOPSIS, added link
       to Text::CSV::Slurp)
     - added git repository to Makefile.PL and Build.PL  
     - more author tests
 
-0.01  Thu Jul 29 18:11:00 2010
+0.01  Thu Jul 29 2010
 	- initial CPAN upload.
 
