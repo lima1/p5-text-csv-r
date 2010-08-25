@@ -1,6 +1,6 @@
 Revision history for Perl extension Text::CSV::R.
 
-0.1  Thu Aug 18 2010
+0.1  Thu Aug 24 2010
     - code cleanup
     - Bugfix: colnames wrong with row_names option 
 

@@ -390,7 +390,7 @@ header is the number of data columns - 1 if row names are provided.
 
 Similar to 
 
-    write_table($file, sep_char => "," );
+    write_table($file, sep_char => q{,} );
 
 The only difference is that headers include a column for the row names.
 
