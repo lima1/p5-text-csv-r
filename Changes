@@ -1,7 +1,7 @@
 Revision history for Perl extension Text::CSV::R.
 
 0.2  Thu Aug 24 2010
-    - fill option for write
+    - fill option for read and write
     - Bugfix: options in read_delim broken
 
 0.1  Thu Aug 24 2010
