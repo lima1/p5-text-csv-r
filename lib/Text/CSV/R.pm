@@ -76,7 +76,7 @@ sub read_csv2 {
 sub read_delim {
     my ( $file, %u_opt ) = @_;
     my $t_opt = { sep_char => "\t", header => 1, };
-    return _read( $file, _merge_options( $t_opt, %u_opt ) );
+    return _read( $file, _merge_options( $t_opt, \%u_opt ) );
 }
 
 sub write_table {
@@ -148,7 +148,12 @@ sub _fill {
     my ( $data ) = @_;
     my @l = map { scalar @{$_} } @{$data};
     my $max = max @l;
-    return [ map { for my $i (1 .. ($max-scalar(@$_))) { push @$_, q{} };  $_; } @{ $data } ];
+    for my $row_id (0 .. $#l) {
+        for my $i (1 .. ($max-$l[$row_id])) { 
+            push @{$data->[$row_id]}, q{}; 
+        };
+    }
+    return $data;
 }
 
 sub _read {
@@ -160,6 +165,11 @@ sub _read {
         close $fh or croak "Cannot close $file: $!";
     }
     _replace_dec( $data_ref, $opts, 1 );
+
+    if (defined $opts->{fill} && $opts->{fill}) {
+        $data_ref = _fill($data_ref);
+    }    
+
     return $data_ref;
 }
 
@@ -263,8 +273,11 @@ LINE:
    # If first line contains exactly one column less than the one with the
    # max. number of columns, we expect that first line contains the header and
    # first column the rownames (like read.tables does)
-    my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1 ? 1 : 0;
-
+    my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1  ? 1 : 0;
+    
+    if (defined $opts->{header} && !$opts->{header}) {
+        $auto_col_row = 0;
+    }    
     # in which column are rownames?
     my $rowname_id
         = ( defined $opts->{row_names}

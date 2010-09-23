@@ -1,4 +1,4 @@
-use Test::More tests => 28;
+use Test::More tests => 32;
 use Test::NoWarnings;
 
 use Text::CSV::R qw(:all);
@@ -84,3 +84,18 @@ $M_ref = read_delim('t/testfiles/imdbdelim.dat' );
 is_deeply( rownames($M_ref), [ '1. ', '2. ',  '3. ' ], 'rownames');
 is_deeply( colnames($M_ref), [ qw( Rating Title Year Votes) ],
     'colnames');
+
+$M_ref = read_delim('t/testfiles/imdbdelim.dat', header=>0, fill => 1 );
+
+is_deeply( colnames($M_ref), [ qw(V1 V2 V3 V4 V5) ], 'fill colnames');
+is_deeply( $M_ref->[0], [ 'Rating', 'Title',  'Year', 'Votes', '' ], 'fill');
+
+$M_ref = read_delim('t/testfiles/imdbdelim.dat', header=>0, fill => 0 );
+
+is_deeply( $M_ref->[0], [ 'Rating', 'Title',  'Year', 'Votes' ], 'no fill');
+
+$M_ref = read_delim('t/testfiles/imdbdelim.dat', header=>1, fill =>1 );
+
+is_deeply( colnames($M_ref), [ 'Rating', 'Title',  'Year', 'Votes' ], 
+    'fill with header');
+
