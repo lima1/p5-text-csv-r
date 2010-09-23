@@ -455,6 +455,14 @@ implementation.
   Default     : .
   Description : the character used in the file for decimal points.
 
+=item fill
+
+  Text::CSV   : 
+  R           : fill
+  Default     : 0 
+  Description : if true then in case the rows have unequal length, blank
+                fields are implicitly added. 
+
 =item quote
 
   Text::CSV   : quote_char 
@@ -558,14 +566,6 @@ implementation.
                 It is also possible to provide the col and rownames by array
                 reference.
                    
-=item fill
-
-  Text::CSV   : 
-  R           : fill
-  Default     : 0 
-  Description : if true then in case the rows have unequal length, blank
-                fields are implicitly added. 
-
 =back
 
 =back
@@ -583,9 +583,6 @@ replaced with underscores and indexing starts with 0, not 1.
 
 =item The C<sep> and C<quote> options in R support multiple characters, the
 L<Text::CSV> counterparts do not.
-
-=item There is no C<fill> option for read because Perl 2D arrays do not need
-to have a fixed number of columns.
 
 =back
 
