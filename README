@@ -1,4 +1,4 @@
-Text-CSV-R version 0.1
+Text-CSV-R version 0.2
 ======================
 
 This is just a convinient wrapper around Text::CSV. It behavious mostly

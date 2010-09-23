@@ -10,6 +10,7 @@ use Text::CSV;
 use Text::CSV::R::Matrix;
 use Carp;
 use Scalar::Util qw(reftype looks_like_number openhandle);
+use List::Util qw(max);
 
 our @ISA = qw(Exporter);
 
@@ -21,7 +22,7 @@ our %EXPORT_TAGS = (
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 # A mapping of the R options to the Text:CSV options. False if there is no
 # Text::CSV equivalent (specified because R options are not passed to
@@ -32,7 +33,7 @@ our $R_OPT_MAP = {
     quote       => 'quote_char',
     map { $_ => 0 }
         qw(dec skip nrow header encoding row_names col_names
-        blank_lines_skip append hr),
+        blank_lines_skip append hr fill),
 };
 
 # merge the global default options, function defaults and user options
@@ -143,6 +144,13 @@ sub _replace_dec_col {
     return $col;
 }
 
+sub _fill {
+    my ( $data ) = @_;
+    my @l = map { scalar @{$_} } @{$data};
+    my $max = max @l;
+    return [ map { for my $i (1 .. ($max-scalar(@$_))) { push @$_, q{} };  $_; } @{ $data } ];
+}
+
 sub _read {
     my ( $file, $opts ) = @_;
 
@@ -160,6 +168,9 @@ sub _write {
 
     my ( $fh, $toclose ) = _get_fh( $file, 0, $opts );
     _replace_dec( $data_ref, $opts, 0 );
+    if (defined $opts->{fill} && $opts->{fill}) {
+        $data_ref = _fill($data_ref);
+    }    
     _write_to_fh( $data_ref, $fh, $opts );
     if ($toclose) {
         close $fh or croak "Cannot close $file: $!";
@@ -317,8 +328,8 @@ Text::CSV::R - Text::CSV wrapper similar to R's read.table and write.table
 
   my $M = read_table($filename, %options);
 
-  print join(q{,}, colnames($M));
-  print join(q{,}, rownames($M));
+  print join(q{,}, @{ colnames($M) });
+  print join(q{,}, @{ rownames($M) });
 
   print $M->[0][0];
 
@@ -529,11 +540,19 @@ implementation.
   Text::CSV   : 
   R           : col.names, row.names
   Default     : 1 if array is tied to Text::CSV::R::Matrix, 0 otherwise
-  Description : if scalar, then specifies whether col and rownames should be printed. 
-                Requires that array is tied to Text::CSV::R::Matrix. It is
-                also possible to provide the col and rownames by array
+  Description : if scalar, then specifies whether col and rownames should be 
+                printed.  Requires that array is tied to Text::CSV::R::Matrix.
+                It is also possible to provide the col and rownames by array
                 reference.
                    
+=item fill
+
+  Text::CSV   : 
+  R           : fill
+  Default     : 0 
+  Description : if true then in case the rows have unequal length, blank
+                fields are implicitly added. 
+
 =back
 
 =back
@@ -552,8 +571,8 @@ replaced with underscores and indexing starts with 0, not 1.
 =item The C<sep> and C<quote> options in R support multiple characters, the
 L<Text::CSV> counterparts do not.
 
-=item There is no C<fill> option because Perl 2D arrays do not need to have a
-fixed number of columns.
+=item There is no C<fill> option for read because Perl 2D arrays do not need
+to have a fixed number of columns.
 
 =back
 

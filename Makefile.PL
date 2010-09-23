@@ -10,6 +10,7 @@ WriteMakefile(
         'Text::CSV'    => 1.0,
         'Carp'         => 0,
         'Scalar::Util' => 0,
+        'List::Util' => 0,
 
         # these for testing
         'Test::More'       => 0,

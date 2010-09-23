@@ -11,6 +11,7 @@ my $builder = Module::Build->new(
     requires => {
         'perl'           => '5.6.0', 
         'Scalar::Util'   => 0,
+        'List::Util'     => 0,
         'Carp'           => 0,
         'Text::CSV'      => 1,
     },
