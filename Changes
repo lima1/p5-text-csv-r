@@ -1,8 +1,10 @@
 Revision history for Perl extension Text::CSV::R.
 
-0.2  Thu Aug 24 2010
+0.2  Fri Sep 24 2010
     - fill option for read and write
     - Bugfix: options in read_delim broken
+    - Bugfix: SYNOPSIS suggested that colnames/rownames returns array not
+              array_ref 
 
 0.1  Thu Aug 24 2010
     - code cleanup

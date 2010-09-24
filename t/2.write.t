@@ -1,4 +1,4 @@
-use Test::More tests => 10;
+use Test::More tests => 12;
 use Test::NoWarnings;
 use Test::LongString;
 
@@ -72,6 +72,12 @@ is_string( slurp($filename), "1,22;2,33;Hello,World\n3,44;4,55;Hello.World\n", '
 
 write_table( [ [ 1, 2, 3 ], [ 3, 4 ] ], $filename, sep => q{,}, fill => 1 );
 is_string( slurp($filename), "1,2,3\n3,4,\n", '2D array fill' );
+
+write_table( [ [ 1, 2, 3 ], [ 3, 4 ] ], $filename, sep => q{,});
+is_string( slurp($filename), "1,2,3\n3,4,\n", '2D array fill' );
+
+write_table( [ [ 1, 2, 3 ], [ 3, 4 ] ], $filename, sep => q{,}, fill => 0 );
+is_string( slurp($filename), "1,2,3\n3,4\n", '2D array fill' );
 
 sub slurp {
     my ($file) = @_;

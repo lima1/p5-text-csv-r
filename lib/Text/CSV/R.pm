@@ -82,12 +82,12 @@ sub read_delim {
 sub write_table {
     my ( $data_ref, $file, %u_opt ) = @_;
     return _write( $data_ref, $file,
-        _merge_options( { eol => "\n" }, \%u_opt ) );
+        _merge_options( { eol => "\n", fill => 1 }, \%u_opt ) );
 }
 
 sub write_csv {
     my ( $data_ref, $file, %u_opt ) = @_;
-    my $t_opt = { eol => "\n", hr => 1, sep_char => q{,} };
+    my $t_opt = { eol => "\n", fill => 1, hr => 1, sep_char => q{,} };
     return _write( $data_ref, $file, _merge_options( $t_opt, \%u_opt ) );
 }
 
@@ -145,13 +145,13 @@ sub _replace_dec_col {
 }
 
 sub _fill {
-    my ( $data ) = @_;
+    my ($data) = @_;
     my @l = map { scalar @{$_} } @{$data};
     my $max = max @l;
-    for my $row_id (0 .. $#l) {
-        for my $i (1 .. ($max-$l[$row_id])) { 
-            push @{$data->[$row_id]}, q{}; 
-        };
+    for my $row_id ( 0 .. $#l ) {
+        for my $i ( 1 .. ( $max - $l[$row_id] ) ) {
+            push @{ $data->[$row_id] }, q{};
+        }
     }
     return $data;
 }
@@ -166,9 +166,9 @@ sub _read {
     }
     _replace_dec( $data_ref, $opts, 1 );
 
-    if (defined $opts->{fill} && $opts->{fill}) {
+    if ( defined $opts->{fill} && $opts->{fill} ) {
         $data_ref = _fill($data_ref);
-    }    
+    }
 
     return $data_ref;
 }
@@ -178,9 +178,9 @@ sub _write {
 
     my ( $fh, $toclose ) = _get_fh( $file, 0, $opts );
     _replace_dec( $data_ref, $opts, 0 );
-    if (defined $opts->{fill} && $opts->{fill}) {
+    if ( defined $opts->{fill} && $opts->{fill} ) {
         $data_ref = _fill($data_ref);
-    }    
+    }
     _write_to_fh( $data_ref, $fh, $opts );
     if ($toclose) {
         close $fh or croak "Cannot close $file: $!";
@@ -273,11 +273,12 @@ LINE:
    # If first line contains exactly one column less than the one with the
    # max. number of columns, we expect that first line contains the header and
    # first column the rownames (like read.tables does)
-    my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1  ? 1 : 0;
-    
-    if (defined $opts->{header} && !$opts->{header}) {
+    my $auto_col_row = scalar @{ $data[0] || [] } == $max_cols - 1 ? 1 : 0;
+
+    if ( defined $opts->{header} && !$opts->{header} ) {
         $auto_col_row = 0;
-    }    
+    }
+
     # in which column are rownames?
     my $rowname_id
         = ( defined $opts->{row_names}
@@ -459,7 +460,7 @@ implementation.
 
   Text::CSV   : 
   R           : fill
-  Default     : 0 
+  Default     : 0 for read, 1 for write
   Description : if true then in case the rows have unequal length, blank
                 fields are implicitly added. 
 
