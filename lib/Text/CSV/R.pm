@@ -22,7 +22,7 @@ our %EXPORT_TAGS = (
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '0.2';
+our $VERSION = '0.3';
 
 # A mapping of the R options to the Text:CSV options. False if there is no
 # Text::CSV equivalent (specified because R options are not passed to
@@ -357,7 +357,7 @@ Text::CSV::R - Text::CSV wrapper similar to R's read.table and write.table
 
 =head1 DESCRIPTION
 
-This is just a convinient wrapper around L<Text::CSV>. It behavious mostly
+This is just a convenient wrapper around L<Text::CSV>. It behavious mostly
 like R's read.table and write.table functions. This module has a very simple
 API and uses the simplest possible data structure for a table: a reference to a
 two-dimensional array. It is very lightweight and has L<Text::CSV> as only

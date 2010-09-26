@@ -11,7 +11,7 @@ use Scalar::Util qw(reftype looks_like_number);
 
 our @ISA = 'Tie::Array';
 
-our $VERSION = '0.1';
+our $VERSION = '0.3';
 
 sub TIEARRAY {
     my ($self) = @_;
