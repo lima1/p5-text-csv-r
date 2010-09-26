@@ -358,7 +358,7 @@ Text::CSV::R - Text::CSV wrapper similar to R's read.table and write.table
 
 =head1 DESCRIPTION
 
-This is just a convenient wrapper around L<Text::CSV>. It behavious mostly
+This is just a convenient wrapper around L<Text::CSV>. It behaves mostly
 like R's read.table and write.table functions. This module has a very simple
 API and uses the simplest possible data structure for a table: a reference to a
 two-dimensional array. It is very lightweight and has L<Text::CSV> as only

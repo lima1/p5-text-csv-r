@@ -1,5 +1,9 @@
 Revision history for Perl extension Text::CSV::R.
 
+0.3  Sun Sep 26 2010
+    - Typos in POD and README
+    - fixed permissions
+    
 0.2  Fri Sep 24 2010
     - fill option for read and write
     - Bugfix: options in read_delim broken
