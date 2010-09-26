@@ -1,9 +1,9 @@
 Text-CSV-R version 0.3
 ======================
 
-This is just a convenient wrapper around Text::CSV. It behaves mostly
-like R's read.table and write.table functions. This module has a very simple
-API and uses the simplest possible data structure for a table: a reference to a
+This is just a convenient wrapper around Text::CSV. It behaves mostly like R's
+read.table and write.table functions. This module has a very simple API and
+uses the simplest possible data structure for a table: a reference to a
 two-dimensional array. It is very lightweight and has Text::CSV as only
 dependency.
 
